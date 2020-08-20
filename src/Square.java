@@ -20,10 +20,12 @@ public class Square {
         this.possibilities =  new ArrayList(Arrays.asList(number));
     }
 
-    public void delete(List<Integer> numbers){
+    public boolean delete(List<Integer> numbers){
+        boolean changed = false;
         if(!solved()){
             for (int number:
                     numbers) {
+                changed |= this.possibilities.contains(number);
                 this.possibilities.remove(new Integer(number));
 
 
@@ -36,6 +38,7 @@ public class Square {
                 System.out.println("ERROR: No possibilities left. ");
             }
         }
+        return changed;
     }
 
     boolean solved(){
