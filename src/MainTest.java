@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MainTest {
 
     @Test
-    void deleteDigitsThatAlreadyExistInContainer() {
+    void deleteDigitsThatAlreadyExistInContainer() throws NoPossibilitiesException {
 
         int[][] sudoku = {
                 {1, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -30,7 +30,7 @@ class MainTest {
     }
 
     @Test
-    void setDigitsThatHaveOnlyOnePossibleSquare() {
+    void setDigitsThatHaveOnlyOnePossibleSquare() throws NoPossibilitiesException {
 
         int[][] sudoku = {
                 {0, 0, 3, 0, 0, 0, 0, 0, 0},
@@ -56,7 +56,7 @@ class MainTest {
     }
 
     @Test
-    void deleteDigitsThatMustBeInOtherPlaceInContainerFromRow() {
+    void deleteDigitsThatMustBeInOtherPlaceInContainerFromRow() throws NoPossibilitiesException {
 
         int[][] sudoku = {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -86,7 +86,7 @@ class MainTest {
 
 
     @Test
-    void deleteDigitsThatMustBeInOtherPlaceInContainerFromColumn() {
+    void deleteDigitsThatMustBeInOtherPlaceInContainerFromColumn() throws NoPossibilitiesException {
 
         int[][] sudoku = {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -116,7 +116,7 @@ class MainTest {
 
 
     @Test
-    void deleteDigitsThatMustBeInOtherPlaceInContainerFromBlock() {
+    void deleteDigitsThatMustBeInOtherPlaceInContainerFromBlock() throws NoPossibilitiesException {
 
         int[][] sudoku = {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -144,5 +144,68 @@ class MainTest {
 
     }
 
+    @Test
+    void cloning() {
+        int[][] sudoku = {
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 3, 0},
+                {5, 6, 7, 0, 0, 0, 8, 0, 9},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0}
+        };
 
+        Square[][] squares = Main.createSquaresFromInts(sudoku);
+        Square[][] clone = Main.cloneSquares(squares);
+        clone[0][0].solve(7);
+
+        assertEquals(squares[0][0].possibilities.size(), 9);
+        assertEquals(clone[0][0].possibilities.size(), 1);
+    }
+
+    @Test
+    void exception() {
+        boolean exceptionStopsMethod = true;
+        int[][] sudoku = {
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 3, 3, 0},
+                {5, 6, 7, 0, 0, 0, 8, 0, 9},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0}
+        };
+
+        Square[][] squares = Main.createSquaresFromInts(sudoku);
+        Main.isSudokuSolved(squares);
+        exceptionStopsMethod = false;
+        //System.out.println("kept running");
+        assertFalse(exceptionStopsMethod);
+    }
+
+    @Test
+    void hasMistakeTest() {
+
+        int[][] sudoku = {
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 3, 3, 0},
+                {5, 6, 7, 0, 0, 0, 8, 0, 9},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0}
+        };
+
+        Square[][] squares = Main.createSquaresFromInts(sudoku);
+
+
+        assertTrue(Main.hasSudokuMistake(squares));
+    }
 }

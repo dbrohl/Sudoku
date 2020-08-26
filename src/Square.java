@@ -20,7 +20,13 @@ public class Square {
         this.possibilities =  new ArrayList(Arrays.asList(number));
     }
 
-    public boolean delete(List<Integer> numbers){
+    public Square(List<Integer> possibilities, int x, int y) {
+        this.possibilities = possibilities;
+        this.x = x;
+        this.y = y;
+    }
+
+    public boolean delete(List<Integer> numbers) throws NoPossibilitiesException {
         boolean changed = false;
         if(!solved()){
             for (int number:
@@ -32,10 +38,11 @@ public class Square {
             }
 
             if(possibilities.size()==1) {
-                System.out.println("only one possibility left: "+possibilities.get(0));
+                System.out.println("only one possibility at "+x+":"+y+" left: "+possibilities.get(0));
             }
             if(possibilities.size()==0) {
-                System.out.println("ERROR: No possibilities left. ");
+                System.out.println("We made a mistake. There are no possibilities at "+x+":"+y+" left. ");
+                throw new NoPossibilitiesException();
             }
         }
         return changed;
@@ -47,7 +54,13 @@ public class Square {
 
     void solve(int number){
         this.possibilities = new ArrayList(Arrays.asList(number));
-        System.out.println("set number: "+possibilities.get(0));
+        System.out.println("set "+x+":"+y+" to "+possibilities.get(0));
+    }
+
+    public Square cloneSquare() {
+
+        return new Square(new ArrayList<>(possibilities), x, y);
+
     }
 
 
